@@ -174,7 +174,7 @@ function handleCollision(b1, b2) {
   normalY /= normalLength;
   
   // Find the overlap
-  let overlap = 52 - normalLength;
+  let overlap = 60 - normalLength;
 
   // Move balls to remove overlap
   let correctionX = normalX * overlap / 2.0;
