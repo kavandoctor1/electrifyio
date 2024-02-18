@@ -3,7 +3,6 @@ const socket = io('localhost:3000')
 socket.emit("joined");
 
 
-
 var balls = [];
 var currentball = -1;
 var ballindex = -1;
@@ -53,11 +52,12 @@ document.getElementById("restart_button").addEventListener("click", () => {
 });
 
 
-
 socket.on("join", (ball) => {
     console.log('join', ball);
     balls.push(new Ball(ball.x,250,0,0,0,0,0,0,3,ball.index,ball.color));
-  });
+    playMusic('hopeful');
+
+});
 
 socket.on("update", (data) => {
     // console.log('update',data,balls);
@@ -95,9 +95,9 @@ socket.on("restart", () => {
 });
 
 
-socket.on("bottom", (data) => {
-  LOWERWALL = data;
-});
+// socket.on("bottom", (data) => {
+//   LOWERWALL = data;
+// });
 
 
 
@@ -352,9 +352,9 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
       socket.emit("update", balls[ballindex]);
       // if(balls.length > 1) LOWERWALL -= dLOWER;
 
-      if(ballindex == 0){
-        socket.emit("bottom",LOWERWALL);
-      }
+      // if(ballindex == 0){
+      //   socket.emit("bottom",LOWERWALL);
+      // }
     }
 }
 
