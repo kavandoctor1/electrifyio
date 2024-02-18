@@ -1,5 +1,6 @@
 
 const socket = io('https://web-production-3d76c.up.railway.app');
+// const socket = io('localhost:3000')
 socket.emit("joined");
 
 
@@ -96,7 +97,7 @@ const blob_radius = 25;
 const LEFTWALL = -300;
 const UPPERWALL = 1000;
 const RIGHTWALL = 1000;
-
+var LOWERWALL = 100;
 
 
 var cnv;
@@ -135,7 +136,7 @@ function display() {
 
     strokeWeight(10);
    
-    drawLine(0,0,width,0);
+    drawLine(0,LOWERWALL,width,LOWERWALL);
   
   
     fill(0,0,0); //If more text is written elsewhere make sure the default is black
@@ -270,17 +271,7 @@ function isNumeric(n) {
 
 
 function draw(){
-  const dt = 0.1;
-  const g = 9.8;
-  const blob_radius = 25;
-  
-  
-  
-  const LEFTWALL = -300;
-  const UPPERWALL = 1000;
-  const RIGHTWALL = 1000;
-  
-  // console.log(balls.length);
+
     if(ballindex == -1 || balls.length <= ballindex){
         return;
     }
@@ -315,9 +306,9 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
     }
     ball.deltaVy = (ball.Fy/ball.mass - g)*dt;
     
-    if ( (ball.y - blob_radius < 0) & ( ball.x > 0 ) & ( ball.x < width ) ) {
+    if ( (ball.y - blob_radius < LOWERWALL) & ( ball.x > blob_radius ) & ( ball.x < width+blob_radius ) ) {
         ball.vy = -ball.vy;
-        ball.y = blob_radius + 1;
+        ball.y = blob_radius + LOWERWALL + 1;
     }
 
     ball.Fx = 0;
