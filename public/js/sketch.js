@@ -66,7 +66,8 @@ socket.on("update", (data) => {
 
 socket.on("reset", (data) => {
   // console.log('update',data,balls);
-  balls = data;
+  balls = data[0];
+  LOWERWALL = data[1];
   resetting = false;
 });
 
@@ -321,7 +322,7 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
     ball.deltaVy = (ball.Fy/ball.mass - g)*dt;
     
     if ( (ball.y - blob_radius < LOWERWALL) &  (ball.y - blob_radius > LOWERWALL - 20) & ( ball.x > 0) & ( ball.x < width ) ) {
-        ball.vy = -0.9*ball.vy;
+        ball.vy = -0.95*ball.vy;
         ball.y = blob_radius + LOWERWALL + 1;
     }
 

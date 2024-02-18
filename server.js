@@ -75,8 +75,7 @@ io.on("connection", (socket) => {
     for(var i = 0; i < balls.length; i ++){
       balls[i] = new Ball(100+100*i,250,0,0,0,0,0,0,3,i,balls[i].color);
     }
-    io.sockets.emit("reset", balls);
-    io.sockets.emit("bottom",data);
+    io.sockets.emit("reset", [balls,data]);
   })
 });
 
