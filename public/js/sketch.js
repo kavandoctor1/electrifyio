@@ -1,5 +1,3 @@
-const socket = io('https://web-production-3d76c.up.railway.app');
-// const socket = io('localhost:3000')
 socket.emit("joined");
 
 
@@ -337,6 +335,7 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
 
     if (ball.y < -blob_radius || ball.x < LEFTWALL || ball.x > RIGHTWALL || ball.y > UPPERWALL) {
         tase()
+        takepicture()
      drawText('Tased',0.42*width,height/2); 
         // balls[ballindex] = new Ball(100+100*ballindex,250,0,0,0,0,0,0,3,ballindex,balls[ballindex].color);
         socket.emit("reset",100)

@@ -195,13 +195,14 @@ button {
 
 .camera {
   width: 340px;
-  display: block;
+  display: none;
 }
 
 .output {
-  width: 340px;
-  display: block;
-  vertical-align: top;
+  display: none;
+  /* width: 340px;
+  display: inline-block;
+  vertical-align: top; */
 }
 
 #startbutton {
