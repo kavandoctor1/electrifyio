@@ -339,8 +339,7 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
         tase()
      drawText('Tased',0.42*width,height/2); 
         // balls[ballindex] = new Ball(100+100*ballindex,250,0,0,0,0,0,0,3,ballindex,balls[ballindex].color);
-        LOWERWALL = 200;
-        socket.emit("reset",LOWERWALL)
+        socket.emit("reset",200)
         resetting = true;
      }
     
