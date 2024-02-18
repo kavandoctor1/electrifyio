@@ -62,9 +62,15 @@ socket.on("join", (ball) => {
 
 socket.on("update", (data) => {
     // console.log('update',data,balls);
-    balls = data;
-    resetting = false;
+    if(data.index != ballindex) balls[data.index] = data;
 });
+
+socket.on("reset", (data) => {
+  // console.log('update',data,balls);
+  balls = data;
+  resetting = false;
+});
+
 
 socket.on("joined", (data) => {
     console.log('joined', data,balls);
