@@ -1,5 +1,5 @@
-const socket = io('https://web-production-3d76c.up.railway.app');
-// const socket = io('localhost:3000')
+// const socket = io('https://web-production-3d76c.up.railway.app');
+const socket = io('localhost:3000')
 socket.emit("joined");
 
 
