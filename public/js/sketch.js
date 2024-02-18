@@ -9,6 +9,7 @@ var balls = [];
 var currentball = -1;
 var ballindex = -1;
 
+var resetting = false;
 
 
 class Ball{
@@ -61,7 +62,8 @@ socket.on("join", (ball) => {
 
 socket.on("update", (data) => {
     // console.log('update',data,balls);
-    if(data.index != ballindex) balls[data.index] = data;
+    balls = data;
+    resetting = false;
 });
 
 socket.on("joined", (data) => {
@@ -279,7 +281,7 @@ function isNumeric(n) {
 function draw(){
 
     
-    if(ballindex == -1 || balls.length <= ballindex){
+    if(ballindex == -1 || balls.length <= ballindex || resetting){
         return;
     }
 const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
@@ -330,23 +332,25 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
     if (ball.y < -blob_radius || ball.x < LEFTWALL || ball.x > RIGHTWALL || ball.y > UPPERWALL) {
         tase()
      drawText('Tased',0.42*width,height/2); 
-        balls[ballindex] = new Ball(100+100*ballindex,250,0,0,0,0,0,0,3,ballindex,balls[ballindex].color);
+        // balls[ballindex] = new Ball(100+100*ballindex,250,0,0,0,0,0,0,3,ballindex,balls[ballindex].color);
         LOWERWALL = 200;
-        socket.emit("bottom",LOWERWALL);
+        socket.emit("reset",LOWERWALL)
+        resetting = true;
      }
     
 
     for(ball of balls){
         drawBlob(ball.x,ball.y,blob_radius,ball.color,ball.mass,ballindex );
     }
-    
-    collisions(balls, blob_radius);
-    socket.emit("update", balls[ballindex]);
-    if(balls.length > 1) LOWERWALL -= dLOWER;
+    if(!resetting){
+      collisions(balls, blob_radius);
+      socket.emit("update", balls[ballindex]);
+      if(balls.length > 1) LOWERWALL -= dLOWER;
 
-    if(ballindex == 0){
-      socket.emit("bottom",LOWERWALL);
+      if(ballindex == 0){
+        socket.emit("bottom",LOWERWALL);
 
+      }
     }
 }
 

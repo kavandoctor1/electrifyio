@@ -15,6 +15,23 @@ const io = socket(server);
 // Players array
 let balls = [];
 let lowerwall = 100;
+class Ball{
+
+  constructor(x,y,vx,vy,deltaVx,deltaVy,Fx,Fy,mass, index,color){
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
+    this.deltaVx = deltaVx;
+    this.deltaVy = deltaVy;
+    this.Fx = Fx;
+    this.Fy = Fy;
+    this.mass = mass;
+    this.index = index;
+    this.color = color
+  }
+}
+
 
 io.on("connection", (socket) => {
   console.log("Made socket connection", socket.id);
@@ -36,7 +53,7 @@ io.on("connection", (socket) => {
     socket.on("update", (data) => {
       // console.log('update',balls);
     balls[data.index] = data;
-    io.sockets.emit("update", data);
+    io.sockets.emit("update", balls);
   });
 
 
@@ -52,6 +69,15 @@ io.on("connection", (socket) => {
     lowerwall = data;
     io.sockets.emit("bottom",lowerwall);
   });
+
+  socket.on("reset", (data) =>{
+    console.log('reset');
+    for(var i = 0; i < balls.length; i ++){
+      balls[i] = new Ball(100+100*i,250,0,0,0,0,0,0,3,i,balls[i].color);
+    }
+    io.sockets.emit("update", balls);
+    io.sockets.emit("bottom",data);
+  })
 });
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
