@@ -1,5 +1,5 @@
 
-const socket = io.connect("http://web-production-3d76c.up.railway.app:3000");
+const socket = io.connect("web-production-3d76c.up.railway.app");
 socket.emit("joined");
 
 
