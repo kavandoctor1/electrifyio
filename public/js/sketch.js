@@ -280,7 +280,7 @@ function draw(){
   const UPPERWALL = 1000;
   const RIGHTWALL = 1000;
   
-  console.log(balls.length);
+  // console.log(balls.length);
     if(ballindex == -1 || balls.length <= ballindex){
         return;
     }
