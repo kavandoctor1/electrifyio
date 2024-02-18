@@ -14,6 +14,7 @@ const io = socket(server);
 
 // Players array
 let balls = [];
+let lowerwall = 100;
 
 io.on("connection", (socket) => {
   console.log("Made socket connection", socket.id);
@@ -41,9 +42,15 @@ io.on("connection", (socket) => {
 
   socket.on("restart", () => {
     console.log('restart');
-
+    lowerwall = 100;
     balls = [];
     io.sockets.emit("restart");
+  });
+
+  socket.on("bottom", (data) => {
+    console.log('bottom');
+    lowerwall = data;
+    io.sockets.emit("bottom",lowerwall);
   });
 });
 

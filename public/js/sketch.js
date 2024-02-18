@@ -87,6 +87,11 @@ socket.on("restart", () => {
 });
 
 
+socket.on("bottom", (data) => {
+  LOWERWALL = data;
+});
+
+
 
 const dt = 0.1;
 const g = 9.8;
@@ -326,7 +331,8 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
         tase()
      drawText('Tased',0.42*width,height/2); 
         balls[ballindex] = new Ball(100+100*ballindex,250,0,0,0,0,0,0,3,ballindex,balls[ballindex].color);
-        LOWERWALL = 100;
+        LOWERWALL = 200;
+        socket.emit("bottom",LOWERWALL);
      }
     
 
@@ -336,9 +342,12 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
     
     collisions(balls, blob_radius);
     socket.emit("update", balls[ballindex]);
+    if(balls.length > 1) LOWERWALL -= dLOWER;
 
-    LOWERWALL -= dLOWER;
+    if(ballindex == 0){
+      socket.emit("bottom",LOWERWALL);
 
+    }
 }
 
 
