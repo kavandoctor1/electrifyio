@@ -181,10 +181,10 @@ socket.on("rollDice", (data, turn) => {
 });
 
 // Logic to restart the game
-document.getElementById("restart-btn").addEventListener("click", () => {
-  socket.emit("restart");
-});
+  document.getElementById("restart-btn").addEventListener("click", () => {
+    socket.emit("restart");
+  });
 
-socket.on("restart", () => {
-  window.location.reload();
-});
+  socket.on("restart", () => {
+    window.location.reload();
+  });

@@ -13,28 +13,40 @@ app.use(express.static("public"));
 const io = socket(server);
 
 // Players array
-let users = [];
+let balls = [];
 
 io.on("connection", (socket) => {
   console.log("Made socket connection", socket.id);
 
   socket.on("join", (data) => {
-    users.push(data);
+    balls.push(data);
+    console.log('join');
+    console.log(balls);
     io.sockets.emit("join", data);
   });
 
   socket.on("joined", () => {
-    socket.emit("joined", users);
+    console.log('joined');
+    console.log(balls);
+    
+    socket.emit("joined", balls);
   });
-
-  socket.on("rollDice", (data) => {
-    users[data.id].pos = data.pos;
-    const turn = data.num != 6 ? (data.id + 1) % users.length : data.id;
-    io.sockets.emit("rollDice", data, turn);
+  
+    socket.on("update", (data) => {
+      // console.log('update',balls);
+    balls[data.index] = data;
+    io.sockets.emit("update", data);
   });
+  // socket.on("rollDice", (data) => {
+  //   users[data.id].pos = data.pos;
+  //   const turn = data.num != 6 ? (data.id + 1) % users.length : data.id;
+  //   io.sockets.emit("rollDice", data, turn);
+  // });
 
   socket.on("restart", () => {
-    users = [];
+    console.log('restart');
+
+    balls = [];
     io.sockets.emit("restart");
   });
 });

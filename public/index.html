@@ -1,48 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snakes and Ladders</title>
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
-    <div class="board"></div>
-    <img src="images/red_piece.png" alt="" hidden="true" id="red-piece" />
-    <img src="images/blue_piece.png" alt="" hidden="true" id="blue-piece" />
-    <img src="images/yellow_piece.png" alt="" hidden="true" id="yellow-piece" />
-    <img src="images/green_piece.png" alt="" hidden="true" id="green-piece" />
-    <div class="container">
-      <canvas id="canvas"></canvas>
-    </div>
-    <div class="info-box">
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-input"
-          id="name"
-          placeholder="Your name"
-          required
-        />
-        <button class="btn draw-border" id="start-btn">Join</button>
-      </div>
-    </div>
-    <div id="players-box">
-      <h3>Players currently online:</h3>
-      <br>
-      <table id="players-table"></table>
-    </div>
-    <div id="current-player"></div>
-    <button class="btn draw-border" id="roll-button" hidden>Roll</button>
-    <div class="dice">
-      <img src="./images/dice/dice1.png" alt="" id="dice" />
-    </div>
-    <button class="btn draw-border" id="restart-btn" hidden>Restart</button>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="js/index.js"></script>
-  </body>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="msapplication-TileColor" content="#2196f3">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <meta name="theme-color" content="#2196f3">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="msapplication-starturl" content="./">
+    <meta name="description"
+          content="Progressive Web Application for serial communication with your own Bluetooth Low Energy (Smart) devices">
+
+    <title>Bonk Taser</title>
+
+    <!-- <link rel="manifest" href="manifest.json"> -->
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#2196f3">
+    <link rel="shortcut icon" href="icons/favicon.ico"> -->
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/normalize.css" rel="stylesheet">
+    <link href="css/tabs.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <!-- <script src="js/p5.js"></script>
+     -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js" defer></script>
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script> -->
+</head>
+<body>
+
+    <div id = "app" class="app">
+
+        <div class="toolbar">
+            <div id="device-name" class="name">Not Connected</div>
+
+            <div class="buttons">
+                <button id="connect" type="button" aria-label="Connect">
+                    <i class="material-icons">bluetooth_connected</i>
+                </button>
+
+                <button id="disconnect" type="button" aria-label="Disconnect">
+                    <i class="material-icons">bluetooth_disabled</i>
+                </button>
+            </div>
+        </div>
+
+<div class="pc-tab">
+
+<input checked="checked" id="tab1" type="radio" name="pct" />
+<input                   id="tab2" type="radio" name="pct" />
+<!-- <input  id="tab1" type="radio" name="pct" /> -->
+<!-- <input checked="checked" id="tab2" type="radio" name="pct" /> -->
+
+  <nav>
+    <ul>
+      <li class="tab1">
+        <label for="tab1">Control</label>
+      </li>
+
+      <li class="tab2">
+        <label for="tab2">Terminal</label>
+      </li>
+    </ul>
+  </nav>
+
+   <section>
+	   <div class="tab1">
+		<!-- <div id="recv_text"> Incoming Message </div>
+		<div id="joyDiv" style="width:200px;height:200px;margin-bottom:20px;  margin-left: auto; margin-right: auto;"></div>
+
+		<div class="slidecontainer">
+		  <input type="range" min="-100" max="100" value="0" class="slider" id="myRange" style="display: block; margin-left: auto; margin-right: auto;">
+		</div> -->
+		<div class="buttoncontainder">
+		  <button type="button" id="candy_button"  style="display: block; margin-left: auto; margin-right: auto;">Join</button>
+      <button type="button" id="restart_button"  style="display: block; margin-left: auto; margin-right: auto;">Restart</button>
+
+		</div> 
+
+		<div id="sent_text">  </div>
+	   </div>
+
+	   <div class="tab2 vexpand">
+		<div class="terminal-tab">
+			<div id="terminal_container" style="flex-grow: 1;">
+				<div id="terminal" class="terminal"></div>
+			</div>
+
+
+		<form id="send-form" class="send-form">
+		    <input id="input" type="text" aria-label="Input" autocomplete="off" placeholder="Type something to send...">
+		    <button type="submit" aria-label="Send">
+			<i class="material-icons">send</i>
+		    </button>
+		</form>
+         	   </div>
+	   </div>
+   </section>
+</div>
+
+</div>
+<script src="/socket.io/socket.io.js"></script>
+
+    <script src="js/BluetoothTerminal.js"></script>
+    <script src="js/main.js"></script>
+    <!-- <script src="js/joy.js"></script> -->
+    <!-- <script src="js/companion.js" data-service-worker="sw.js"></script> -->
+
+    
+
+    <script type="text/javascript">
+	    // var joy = new JoyStick('joyDiv', { internalFillColor: "#E97777",
+			// 		       internalStrokeColor: "#E97777",
+			// 		       externalStrokeColor: "#FF9F9F" ,
+      //      					boundsType: "diamond"});
+
+	    var slider = document.getElementById("myRange")
+	    var output = document.getElementById("sent_text")
+	    var button_count = 0
+
+      var tasechar = 'T';
+
+      function tase(){
+        if (terminal.getDeviceName() != ""){
+				  terminal.send("T").then(() => {});
+			      }
+
+          // if(tasechar == 'T'){
+          //   tasechar = 'F';
+          // }
+          // else{
+          //   tasechar = 'T';
+          // }
+          console.log('TASED MOTHERFUCKER');
+			    // console.log(message);
+			    // output.innerHTML = message;
+		    }
+
+        function taserandom(p){
+          if(Math.random() < p){
+            tase();
+          }
+          else{
+            console.log('won');
+          }
+        }
+    
+	// setInterval(function(){ 
+			  
+
+	// 		  if (terminal.getDeviceName() != ""){
+	// 			  terminal.send(tasechar).then(() => {});
+	// 		      }
+	// 	    }, 10);
+    </script>
+<!-- <script src="js/functions.js"></script> -->
+<script src="js/sketch.js"></script>
+</body>
 </html>
