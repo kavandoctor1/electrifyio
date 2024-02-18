@@ -15,6 +15,8 @@ const io = socket(server);
 // Players array
 let balls = [];
 let lowerwall = 100;
+let resetting = true;
+
 class Ball{
 
   constructor(x,y,vx,vy,deltaVx,deltaVy,Fx,Fy,mass, index,color){
@@ -52,8 +54,10 @@ io.on("connection", (socket) => {
 
     socket.on("update", (data) => {
       // console.log('update',balls);
-    balls[data.index] = data;
-    io.sockets.emit("update", data);
+      if (! resetting){
+      balls[data.index] = data;
+      io.sockets.emit("update", data);
+      }
   });
 
 
@@ -65,17 +69,22 @@ io.on("connection", (socket) => {
   });
 
   socket.on("bottom", (data) => {
-    console.log('bottom');
-    lowerwall = data;
-    io.sockets.emit("bottom",lowerwall);
+    if(! resetting){
+      console.log('bottom');
+      lowerwall = data;
+      io.sockets.emit("bottom",lowerwall);
+    }
   });
 
   socket.on("reset", (data) =>{
+    resetting = true;
     console.log('reset');
     for(var i = 0; i < balls.length; i ++){
       balls[i] = new Ball(100+100*i,250,0,0,0,0,0,0,3,i,balls[i].color);
     }
+    
     io.sockets.emit("reset", [balls,data]);
+    resetting = false;
   })
 });
 
