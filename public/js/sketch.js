@@ -304,7 +304,7 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
 
     var heavy = keyIsDown(actions[4]);
     if(heavy){
-        ball.mass = 5
+        ball.mass = 7
     }
     else{
         ball.mass = 3
