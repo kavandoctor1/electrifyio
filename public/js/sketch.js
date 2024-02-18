@@ -350,11 +350,10 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
     if(!resetting){
       collisions(balls, blob_radius);
       socket.emit("update", balls[ballindex]);
-      if(balls.length > 1) LOWERWALL -= dLOWER;
+      // if(balls.length > 1) LOWERWALL -= dLOWER;
 
       if(ballindex == 0){
         socket.emit("bottom",LOWERWALL);
-
       }
     }
 }
