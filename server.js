@@ -76,14 +76,14 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("reset", (data) =>{
+  socket.on("reset", async function(data) {
     resetting = true;
     console.log('reset');
     for(var i = 0; i < balls.length; i ++){
       balls[i] = new Ball(100+100*i,250,0,0,0,0,0,0,3,i,balls[i].color);
     }
     
-    io.sockets.emit("reset", [balls,data]);
+    await io.sockets.emit("reset", [balls,data]);
     resetting = false;
   })
 });
