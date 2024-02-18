@@ -31,17 +31,13 @@ io.on("connection", (socket) => {
     
     socket.emit("joined", balls);
   });
-  
+
     socket.on("update", (data) => {
       // console.log('update',balls);
     balls[data.index] = data;
     io.sockets.emit("update", data);
   });
-  // socket.on("rollDice", (data) => {
-  //   users[data.id].pos = data.pos;
-  //   const turn = data.num != 6 ? (data.id + 1) % users.length : data.id;
-  //   io.sockets.emit("rollDice", data, turn);
-  // });
+
 
   socket.on("restart", () => {
     console.log('restart');
