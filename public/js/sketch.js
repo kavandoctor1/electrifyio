@@ -1,5 +1,5 @@
-const socket = io('https://web-production-3d76c.up.railway.app');
-// const socket = io('localhost:3000')
+// const socket = io('https://web-production-3d76c.up.railway.app');
+const socket = io('localhost:3000')
 socket.emit("joined");
 
 
@@ -110,7 +110,7 @@ const blob_radius = 25;
 const LEFTWALL = -300;
 const UPPERWALL = 1000;
 const RIGHTWALL = 1000;
-var LOWERWALL = 200;
+var LOWERWALL = 100;
 
 const dLOWER = 0.15;
 
@@ -339,7 +339,7 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
         tase()
      drawText('Tased',0.42*width,height/2); 
         // balls[ballindex] = new Ball(100+100*ballindex,250,0,0,0,0,0,0,3,ballindex,balls[ballindex].color);
-        socket.emit("reset",200)
+        socket.emit("reset",100)
         resetting = true;
      }
     
