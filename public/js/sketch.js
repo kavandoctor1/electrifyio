@@ -97,7 +97,9 @@ const blob_radius = 25;
 const LEFTWALL = -300;
 const UPPERWALL = 1000;
 const RIGHTWALL = 1000;
-var LOWERWALL = 100;
+var LOWERWALL = 200;
+
+const dLOWER = 0.15;
 
 
 var cnv;
@@ -134,11 +136,10 @@ function display() {
     textSize(12);
     textStyle(NORMAL);
 
-    strokeWeight(10);
-   
-    drawLine(0,LOWERWALL,width,LOWERWALL);
-  
-  
+    strokeWeight(0);
+    fill(61, 235, 52);
+    rect(blob_radius,height-LOWERWALL, width-2*blob_radius, LOWERWALL);
+
     fill(0,0,0); //If more text is written elsewhere make sure the default is black
     stroke(0,0,0); // If more lines are drawn elsewhere make sure the default is black
     strokeWeight(0);
@@ -272,6 +273,7 @@ function isNumeric(n) {
 
 function draw(){
 
+    
     if(ballindex == -1 || balls.length <= ballindex){
         return;
     }
@@ -306,7 +308,7 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
     }
     ball.deltaVy = (ball.Fy/ball.mass - g)*dt;
     
-    if ( (ball.y - blob_radius < LOWERWALL) & ( ball.x > blob_radius ) & ( ball.x < width+blob_radius ) ) {
+    if ( (ball.y - blob_radius < LOWERWALL) &  (ball.y - blob_radius > LOWERWALL - 20) & ( ball.x > 0) & ( ball.x < width ) ) {
         ball.vy = -ball.vy;
         ball.y = blob_radius + LOWERWALL + 1;
     }
@@ -320,10 +322,11 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
     }
     ball.deltaVx = ball.Fx*dt/ball.mass;
 
-    if (ball.y < 0 || ball.x < LEFTWALL || ball.x > RIGHTWALL || ball.y > UPPERWALL) {
+    if (ball.y < -blob_radius || ball.x < LEFTWALL || ball.x > RIGHTWALL || ball.y > UPPERWALL) {
         tase()
      drawText('Tased',0.42*width,height/2); 
         balls[ballindex] = new Ball(100+100*ballindex,250,0,0,0,0,0,0,3,ballindex,balls[ballindex].color);
+        LOWERWALL = 100;
      }
     
 
@@ -333,6 +336,9 @@ const actions = [LEFT_ARROW,RIGHT_ARROW,UP_ARROW,DOWN_ARROW,32]
     
     collisions(balls, blob_radius);
     socket.emit("update", balls[ballindex]);
+
+    LOWERWALL -= dLOWER;
+
 }
 
 
