@@ -15,7 +15,7 @@ const io = socket(server);
 // Players array
 let balls = [];
 let lowerwall = 100;
-let resetting = true;
+let resetting = false;
 
 class Ball{
 
