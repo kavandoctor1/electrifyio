@@ -14,7 +14,7 @@ const io = socket(server);
 
 // Players array
 let balls = [];
-let lowerwall = 100;
+let lowerwall = 200;
 let resetting = false;
 
 class Ball{
@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
 
   socket.on("restart", () => {
     console.log('restart');
-    lowerwall = 100;
+    lowerwall = 200;
     balls = [];
     io.sockets.emit("restart");
   });
